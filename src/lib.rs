@@ -10,6 +10,7 @@ pub fn to_ref_derive(input: TokenStream) -> TokenStream {
 
     let struct_name = &input.ident;
     let ref_struct_name = syn::Ident::new(&format!("{}FieldRefs", struct_name), struct_name.span());
+    let struct_vis = &input.vis;
 
     // Adjust generics to include a new lifetime 'z
     let mut generics = input.generics.clone();
@@ -27,7 +28,8 @@ pub fn to_ref_derive(input: TokenStream) -> TokenStream {
                 let field_defs = fields.named.iter().map(|f| {
                     let name = &f.ident;
                     let ty = &f.ty;
-                    quote! { #name: &'z #ty }
+                    let vis = &f.vis;
+                    quote! { #vis #name: &'z #ty }
                 });
                 let to_ref_body = fields.named.iter().map(|f| {
                     let name = &f.ident;
@@ -35,7 +37,7 @@ pub fn to_ref_derive(input: TokenStream) -> TokenStream {
                 });
                 quote! {
                     #[derive(frunk::Generic)]
-                    struct #ref_struct_name #impl_generics {
+                    #struct_vis struct #ref_struct_name #impl_generics {
                         #( #field_defs, )*
                     }
 
@@ -53,7 +55,8 @@ pub fn to_ref_derive(input: TokenStream) -> TokenStream {
             Fields::Unnamed(fields) => {
                 let field_defs = fields.unnamed.iter().map(|f| {
                     let ty = &f.ty;
-                    quote! { &'z #ty }
+                    let vis = &f.vis;
+                    quote! { #vis &'z #ty }
                 });
                 let to_ref_body = (0..fields.unnamed.len()).map(|i| {
                     let idx = Index::from(i);
@@ -61,7 +64,7 @@ pub fn to_ref_derive(input: TokenStream) -> TokenStream {
                 });
                 quote! {
                     #[derive(frunk::Generic)]
-                    struct #ref_struct_name #impl_generics (
+                    #struct_vis struct #ref_struct_name #impl_generics (
                         #( #field_defs, )*
                     );
 
@@ -91,6 +94,7 @@ pub fn to_mut_derive(input: TokenStream) -> TokenStream {
     let struct_name = &input.ident;
     let ref_struct_name =
         syn::Ident::new(&format!("{}FieldMutRefs", struct_name), struct_name.span());
+    let struct_vis = &input.vis;
 
     // Adjust generics to include a new lifetime 'z
     let mut generics = input.generics.clone();
@@ -108,7 +112,8 @@ pub fn to_mut_derive(input: TokenStream) -> TokenStream {
                 let field_defs = fields.named.iter().map(|f| {
                     let name = &f.ident;
                     let ty = &f.ty;
-                    quote! { #name: &'z mut #ty }
+                    let vis = &f.vis;
+                    quote! { #vis #name: &'z mut #ty }
                 });
                 let to_mut_body = fields.named.iter().map(|f| {
                     let name = &f.ident;
@@ -116,7 +121,7 @@ pub fn to_mut_derive(input: TokenStream) -> TokenStream {
                 });
                 quote! {
                     #[derive(frunk::Generic)]
-                    struct #ref_struct_name #impl_generics {
+                    #struct_vis struct #ref_struct_name #impl_generics {
                         #( #field_defs, )*
                     }
 
@@ -134,7 +139,8 @@ pub fn to_mut_derive(input: TokenStream) -> TokenStream {
             Fields::Unnamed(fields) => {
                 let field_defs = fields.unnamed.iter().map(|f| {
                     let ty = &f.ty;
-                    quote! { &'z mut #ty }
+                    let vis = &f.vis;
+                    quote! { #vis &'z mut #ty }
                 });
                 let to_mut_body = (0..fields.unnamed.len()).map(|i| {
                     let idx = Index::from(i);
@@ -142,7 +148,7 @@ pub fn to_mut_derive(input: TokenStream) -> TokenStream {
                 });
                 quote! {
                     #[derive(frunk::Generic)]
-                    struct #ref_struct_name #impl_generics (
+                    #struct_vis struct #ref_struct_name #impl_generics (
                         #( #field_defs, )*
                     );
 
