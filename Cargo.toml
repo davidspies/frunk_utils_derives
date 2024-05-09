@@ -1,0 +1,17 @@
+[package]
+name = "frunk_utils_derives"
+authors = ["David Spies <dnspies@gmail.com>"]
+version = "0.1.0"
+edition = "2021"
+description = "Derives for frunk traits"
+license = "MIT"
+documentation = "https://docs.rs/frunk_utils_derives"
+repository = "https://github.com/davidspies/frunk_utils_derives"
+keywords = ["derives", "frunk", "utils", "hlist", "types"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+quote = "1.0"
+syn = "2.0"
