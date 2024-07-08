@@ -36,7 +36,7 @@ pub fn to_ref_derive(input: TokenStream) -> TokenStream {
                     quote! { #name: &self.#name }
                 });
                 quote! {
-                    #[derive(frunk::Generic)]
+                    #[derive(frunk::Generic, frunk::LabelledGeneric)]
                     #struct_vis struct #ref_struct_name #impl_generics {
                         #( #field_defs, )*
                     }
@@ -120,7 +120,7 @@ pub fn to_mut_derive(input: TokenStream) -> TokenStream {
                     quote! { #name: &mut self.#name }
                 });
                 quote! {
-                    #[derive(frunk::Generic)]
+                    #[derive(frunk::Generic, frunk::LabelledGeneric)]
                     #struct_vis struct #ref_struct_name #impl_generics {
                         #( #field_defs, )*
                     }
