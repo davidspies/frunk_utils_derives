@@ -2,7 +2,7 @@
 name = "frunk_utils_derives"
 authors = ["David Spies <dnspies@gmail.com>"]
 version = "0.1.2"
-edition = "2021"
+edition = "2024"
 description = "Derives for frunk traits"
 license = "MIT"
 documentation = "https://docs.rs/frunk_utils_derives"
